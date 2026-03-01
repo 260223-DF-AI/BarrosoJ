@@ -1,6 +1,11 @@
 # pet_shelter.py - Pet Shelter Management System
 # Starter code for e005-exercise-oop
 
+# Imports
+import random
+import json
+
+
 r"""
 Pet Shelter Management System
 -----------------------------
@@ -97,6 +102,9 @@ class Dog(Animal):
         base = super().describe()
         trained = "trained" if self.is_trained else "not trained"
         return f"{base} - {self.breed}, {trained}"
+    
+    def __repr__(self) -> str:
+        return f"{self.name=}, {self.age=}, {self.breed=}, {self.is_trained=}"
 
 
 class Cat(Animal):
@@ -135,6 +143,9 @@ class Cat(Animal):
         # Add color and indoor/outdoor status
         indoor_status: str = "indoor" if self.is_indoor else "outdoor"
         return f"{base} - {self.color}, {indoor_status}"
+    
+    def __repr__(self) -> str:
+        return f"Cat({self.name=}, {self.age=}, {self.color=}, {self.is_indoor=})"
 
 
 # =============================================================================
@@ -154,7 +165,7 @@ class Puppy(Dog):
             breed: Puppy breed
         """
         # Convert months to years for parent
-        age_years = age_months / 12
+        age_years = round(age_months / 12, 1)
         super().__init__(name, age_years, breed, is_trained=False)
         self.age_months = age_months
     
@@ -166,6 +177,9 @@ class Puppy(Dog):
         """Show age in months for puppies."""
         status = "adopted" if self._adopted else "available"
         return f"{self.name} is a {self.age_months}-month-old {self.breed} puppy ({status})"
+    
+    def __repr__(self) -> str:
+        return f"Puppy({self.name=}, {self.age_months=}, {self.breed=})"
 
 
 class ServiceDog(Dog):
@@ -196,6 +210,9 @@ class ServiceDog(Dog):
         # Get base description and add service type
         base: str = super().describe()
         return f"{base} - Service Type: {self.service_type}"
+    
+    def __repr__(self) -> str:
+        return f"{self.name=}, {self.age=}, {self.breed=}, {self.service_type=}"
 
 
 class Kitten(Cat):
@@ -227,11 +244,38 @@ class Kitten(Cat):
         # Similar to Puppy.describe()
         status = "adopted" if self._adopted else "available"
         return f"{self.name} is a {self.age_months}-month-old kitten ({status})"
+    
+    def __repr__(self) -> str:
+        return f"{self.name=}, {self.age_months=}, {self.color=}"
 
 
 # =============================================================================
 # Task 4: The Shelter Class
 # =============================================================================
+
+# Shelter class helpers
+def get_random_dog_name() -> str:
+    """Return random dog name"""
+
+    # not tracking animal gender so use random name list for each
+    file: str = random.choice(("male-dog-names.json", "female-dog-names.json"))
+
+    # retrieve list of pet names from file
+    with open(file, 'r') as f:
+        dog_names = json.load(f)
+
+    return random.choice(dog_names)
+
+def get_random_cat_name() -> str:
+    """Return random cat name"""
+
+    # retrieve list of pet names from file
+    with open("cat-names.json", 'r') as f:
+        dog_names = json.load(f)
+
+    return random.choice(dog_names)
+
+
 
 class Shelter:
     """Manages the pet shelter."""
@@ -245,6 +289,43 @@ class Shelter:
         """Add an animal to the shelter."""
         self.animals.append(animal)
         return f"{animal.name} has been added to {self.name}"
+    
+    def generate_random_animal(self) -> Animal:
+        """
+        Generate `num` amount of animals and add them to the shelter.
+        """
+
+        # generate randomized attributes to be used
+        age: int = random.randint(1, 13)
+        age_months: int = random.randint(0, 12)
+
+        breed: str = random.choice(("German Shepherd", "Bulldog", "Labrador Retriever", "Golden Retriever", "French Bulldog", "Husky", "Beagle", "Poodle", "Chihuahua", "Dachshund", "Pug", "Border Collie"))
+        color: str = random.choice(("Black", "White", "Brown", "Golden", "Gray"))
+        service_type: str = random.choice(("guide", "therapy", "search"))
+
+        is_trained: bool = random.choice((True, False))
+        is_indoor: bool = random.choice((True, False))
+
+        animal_types: list[str] = ["Dog", "Cat", "Puppy", "ServiceDog", "Kitten"]
+
+        # Choose random animal type, then create and return instance with appropriate attributes
+        match random.choice(animal_types):
+            case "Dog":
+                # name, age, breed, is_trained
+                return Dog(get_random_dog_name(), age, breed, is_trained)
+            case "Cat":
+                # name, age, color, is_indoor
+                return Cat(get_random_cat_name(), age, color, is_indoor)
+            case "Puppy":
+                # name, age_months, breed
+                return Puppy(get_random_dog_name(), age_months, breed)
+            case "ServiceDog":
+                # name, age, breed, service_type
+                return ServiceDog(get_random_dog_name(), age, breed, service_type)
+            case "Kitten":
+                # name, age_months, color
+                return Kitten(get_random_cat_name(), age_months, color)
+
     
     def find_by_name(self, name: str):
         """Find an animal by name."""
@@ -357,6 +438,12 @@ def main():
     shelter = Shelter("Happy Paws Rescue")
 
     demonstrate_functionality(shelter)
+
+    # Add 10 generated animals to shelter
+    for _ in range(10):
+       shelter.add_animal(shelter.generate_random_animal())
+
+    shelter.display_all()
     
     
 
