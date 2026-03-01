@@ -112,16 +112,16 @@ class Cat(Animal):
             color: Cat's color/pattern
             is_indoor: Whether the cat is indoor-only
         """
-        # TODO: Call parent constructor with species="Cat"
+        # Call parent constructor with species="Cat"
         super().__init__(name, age, "Cat")
-        # TODO: Set self.color
+        # Set self.color
         self.color = color
-        # TODO: Set self.is_indoor
+        # Set self.is_indoor
         self.is_indoor = is_indoor
     
     def speak(self):
         """Cats meow."""
-        # TODO: Return "{name} says Meow!"
+        # Return "{name} says Meow!"
         return f"{self.name} says Meow!"
     
     def scratch(self):
@@ -130,9 +130,9 @@ class Cat(Animal):
     
     def describe(self):
         """Override to include color and indoor status."""
-        # TODO: Get base description from parent
+        # Get base description from parent
         base: str = super().describe()
-        # TODO: Add color and indoor/outdoor status
+        # Add color and indoor/outdoor status
         indoor_status: str = "indoor" if self.is_indoor else "outdoor"
         return f"{base} - {self.color}, {indoor_status}"
 
@@ -181,19 +181,19 @@ class ServiceDog(Dog):
             breed: Dog breed
             service_type: Type of service (e.g., "guide", "therapy", "search")
         """
-        # TODO: Call parent constructor with is_trained=True
+        # Call parent constructor with is_trained=True
         super().__init__(name, age, breed, is_trained=True)
-        # TODO: Set self.service_type
+        # Set self.service_type
         self.service_type = service_type
     
     def perform_service(self):
         """Perform the dog's service."""
-        # TODO: Return "{name} performs {service_type} duties."
+        # Return "{name} performs {service_type} duties."
         return f"{self.name} performs {self.service_type} duties."
     
     def describe(self):
         """Include service type in description."""
-        # TODO: Get base description and add service type
+        # Get base description and add service type
         base: str = super().describe()
         return f"{base} - Service Type: {self.service_type}"
 
@@ -210,21 +210,21 @@ class Kitten(Cat):
             age_months: Age in months
             color: Kitten's color/pattern
         """
-        # TODO: Convert months to years
+        # Convert months to years
         age_years: float = round(age_months/12, 1) 
-        # TODO: Call parent constructor
+        # Call parent constructor
         super().__init__(name, age_years, color)
-        # TODO: Store age_months
+        # Store age_months
         self.age_months = age_months
     
     def speak(self):
         """Kittens mew."""
-        # TODO: Return "{name} says Mew! Mew!"
+        # Return "{name} says Mew! Mew!"
         return f"{self.name} says Mew! Mew!"
     
     def describe(self):
         """Show age in months for kittens."""
-        # TODO: Similar to Puppy.describe()
+        # Similar to Puppy.describe()
         status = "adopted" if self._adopted else "available"
         return f"{self.name} is a {self.age_months}-month-old kitten ({status})"
 
@@ -248,22 +248,22 @@ class Shelter:
     
     def find_by_name(self, name: str):
         """Find an animal by name."""
-        # TODO: Loop through animals and return one with matching name
+        # Loop through animals and return one with matching name
         matches: list = [animal for animal in self.animals if animal.name == name]
         if len(matches) == 0:
-            # TODO: Return None if not found
+            # Return None if animal not found
             return None
         return matches[0]
         
     
     def list_available(self):
         """List all animals available for adoption."""
-        # TODO: Return list of animals where is_adopted() is False
+        # Return list of animals where is_adopted() is False
         return list(filter(lambda x: not x.is_adopted(), self.animals))
     
     def list_by_species(self, species: str):
         """List all animals of a specific species."""
-        # TODO: Filter self.animals by species
+        # Filter self.animals by species
         return list(filter(lambda x: x.species == species, self.animals))
     
     def adopt_animal(self, name):
@@ -311,21 +311,18 @@ class Shelter:
 # Task 5: Demonstration
 # =============================================================================
 
-def main():
-    """Demonstrate the pet shelter system."""
-    
-    # Create shelter
-    shelter = Shelter("Happy Paws Rescue")
-    
+def demonstrate_functionality(shelter: Shelter) -> None:
+    """Demonstrate the Shelter classes functionality"""
+
     # Add various animals (using completed classes)
     shelter.add_animal(Dog("Buddy", 3, "Golden Retriever", True))
-    # TODO: Add a Cat
+    # Add a Cat
     shelter.add_animal(Cat("Rihanna Kitty", 1, "White"))
-    # TODO: Add a Puppy
+    # Add a Puppy
     shelter.add_animal(Puppy("Oreo", 7, "Border Collie"))
-    # TODO: Add a ServiceDog
+    # Add a ServiceDog
     shelter.add_animal(ServiceDog("Corey", 6, "German Shepherd", "search"))
-    # TODO: Add a Kitten
+    # Add a Kitten
     shelter.add_animal(Kitten("Snowball", 3, "Yellow"))
 
 
@@ -351,6 +348,17 @@ def main():
     print(f"  Available: {stats['available']}")
     print(f"  Adopted: {stats['adopted']}")
     print(f"  By Species: {stats['by_species']}")
+
+
+def main():
+    """Driver function"""
+    
+    # Create shelter
+    shelter = Shelter("Happy Paws Rescue")
+
+    demonstrate_functionality(shelter)
+    
+    
 
 
 if __name__ == "__main__":
