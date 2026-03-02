@@ -67,7 +67,7 @@ class Animal:
     
     def __str__(self):
         """String representation."""
-        return f"{self.species}: {self.name} (Age: {self.age})"
+        return self.describe()
 
 
 # =============================================================================
@@ -300,44 +300,6 @@ class Shelter:
     def save_to_file(self):
         with open("animals.pickle", "wb") as f:
             pickle.dump(self.animals, f)                
-
-
-    def generate_random_animal(self) -> Animal:
-        """
-        Generate `num` amount of animals and add them to the shelter.
-        """
-
-        # generate randomized attributes to be used
-        age: int = random.randint(1, 13)
-        age_months: int = random.randint(0, 12)
-
-        breed: str = random.choice(("German Shepherd", "Bulldog", "Labrador Retriever", "Golden Retriever", "French Bulldog", "Husky", "Beagle", "Poodle", "Chihuahua", "Dachshund", "Pug", "Border Collie"))
-        color: str = random.choice(("Black", "White", "Brown", "Golden", "Gray"))
-        service_type: str = random.choice(("guide", "therapy", "search"))
-
-        is_trained: bool = random.choice((True, False))
-        is_indoor: bool = random.choice((True, False))
-
-        animal_types: list[str] = ["Dog", "Cat", "Puppy", "ServiceDog", "Kitten"]
-
-        # Choose random animal type, then create and return instance with appropriate attributes
-        match random.choice(animal_types):
-            case "Dog":
-                # name, age, breed, is_trained
-                return Dog(get_random_dog_name(), age, breed, is_trained)
-            case "Cat":
-                # name, age, color, is_indoor
-                return Cat(get_random_cat_name(), age, color, is_indoor)
-            case "Puppy":
-                # name, age_months, breed
-                return Puppy(get_random_dog_name(), age_months, breed)
-            case "ServiceDog":
-                # name, age, breed, service_type
-                return ServiceDog(get_random_dog_name(), age, breed, service_type)
-            case "Kitten":
-                # name, age_months, color
-                return Kitten(get_random_cat_name(), age_months, color)
-
     
     def find_by_name(self, name: str):
         """Find an animal by name."""
@@ -348,7 +310,6 @@ class Shelter:
             return None
         return matches[0]
         
-    
     def list_available(self):
         """List all animals available for adoption."""
         # Return list of animals where is_adopted() is False
@@ -400,6 +361,42 @@ class Shelter:
         print(f"{'='*50}")
 
 
+def generate_random_animal(self) -> Animal:
+    """
+    Generate `num` amount of animals and add them to the shelter.
+    """
+
+    # generate randomized attributes to be used
+    age: int = random.randint(1, 13)
+    age_months: int = random.randint(0, 12)
+
+    breed: str = random.choice(("German Shepherd", "Bulldog", "Labrador Retriever", "Golden Retriever", "French Bulldog", "Husky", "Beagle", "Poodle", "Chihuahua", "Dachshund", "Pug", "Border Collie"))
+    color: str = random.choice(("Black", "White", "Brown", "Golden", "Gray"))
+    service_type: str = random.choice(("guide", "therapy", "search"))
+
+    is_trained: bool = random.choice((True, False))
+    is_indoor: bool = random.choice((True, False))
+
+    animal_types: list[str] = ["Dog", "Cat", "Puppy", "ServiceDog", "Kitten"]
+
+    # Choose random animal type, then create and return instance with appropriate attributes
+    match random.choice(animal_types):
+        case "Dog":
+            # name, age, breed, is_trained
+            return Dog(get_random_dog_name(), age, breed, is_trained)
+        case "Cat":
+            # name, age, color, is_indoor
+            return Cat(get_random_cat_name(), age, color, is_indoor)
+        case "Puppy":
+            # name, age_months, breed
+            return Puppy(get_random_dog_name(), age_months, breed)
+        case "ServiceDog":
+            # name, age, breed, service_type
+            return ServiceDog(get_random_dog_name(), age, breed, service_type)
+        case "Kitten":
+            # name, age_months, color
+            return Kitten(get_random_cat_name(), age_months, color)
+
 # =============================================================================
 # Task 5: Demonstration
 # =============================================================================
@@ -448,14 +445,14 @@ def main():
     
     # Create shelter
     shelter = Shelter("Happy Paws Rescue")
-
+    
     # demonstrate_functionality(shelter)
 
     # Add 10 generated animals to shelter
-    # for _ in range(10):
-    #    shelter.add_animal(shelter.generate_random_animal())
+    for _ in range(10):
+       shelter.add_animal(shelter.generate_random_animal())
 
-    shelter.load_from_file()
+    # shelter.load_from_file()
     shelter.display_all()
     # shelter.save_to_file()
 
