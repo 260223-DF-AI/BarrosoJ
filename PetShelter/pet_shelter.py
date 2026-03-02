@@ -2,8 +2,9 @@
 # Starter code for e005-exercise-oop
 
 # Imports
-import random
 import json
+import random
+import pickle
 
 
 r"""
@@ -62,6 +63,7 @@ class Animal:
     def is_adopted(self):
         """Check if animal is adopted."""
         return self._adopted
+
     
     def __str__(self):
         """String representation."""
@@ -290,6 +292,16 @@ class Shelter:
         self.animals.append(animal)
         return f"{animal.name} has been added to {self.name}"
     
+
+    def load_from_file(self):
+        with open("animals.pickle", "rb") as f:
+            self.animals = pickle.load(f)
+
+    def save_to_file(self):
+        with open("animals.pickle", "wb") as f:
+            pickle.dump(self.animals, f)                
+
+
     def generate_random_animal(self) -> Animal:
         """
         Generate `num` amount of animals and add them to the shelter.
@@ -437,13 +449,17 @@ def main():
     # Create shelter
     shelter = Shelter("Happy Paws Rescue")
 
-    demonstrate_functionality(shelter)
+    # demonstrate_functionality(shelter)
 
     # Add 10 generated animals to shelter
-    for _ in range(10):
-       shelter.add_animal(shelter.generate_random_animal())
+    # for _ in range(10):
+    #    shelter.add_animal(shelter.generate_random_animal())
 
+    shelter.load_from_file()
     shelter.display_all()
+    # shelter.save_to_file()
+
+
     
     
 
