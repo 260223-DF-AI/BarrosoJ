@@ -63,6 +63,14 @@ class Animal:
         """Check if animal is adopted."""
         return self._adopted
     
+    # def __dict__(self):
+    #     """Make animals serializable to save to JSON file"""
+    #     return {
+    #         "name": self.name,
+    #         "age": self.age,
+    #         "species": self.species
+    #     }
+    
     def __str__(self):
         """String representation."""
         return f"{self.species}: {self.name} (Age: {self.age})"
@@ -245,6 +253,13 @@ class Kitten(Cat):
         status = "adopted" if self._adopted else "available"
         return f"{self.name} is a {self.age_months}-month-old kitten ({status})"
     
+    # def __dict__(self):
+    #     return {
+    #         "name": self.name,
+    #         "age_months": self.age_months,
+    #         "color": self.color
+    #     }
+    
     def __repr__(self) -> str:
         return f"{self.name=}, {self.age_months=}, {self.color=}"
 
@@ -290,6 +305,18 @@ class Shelter:
         self.animals.append(animal)
         return f"{animal.name} has been added to {self.name}"
     
+
+    def load_from_file(self):
+        with open("animals.json", "r") as f:
+            self.animals = json.load(f)
+
+    def save_to_file(self):
+        with open("animals.json", "w") as f:
+            json.dump([animal.__dict__ for animal in self.animals], f, indent=4)
+            # for animal in self.animals:
+            #     json.dump(animal.__dict__(), f)
+
+
     def generate_random_animal(self) -> Animal:
         """
         Generate `num` amount of animals and add them to the shelter.
@@ -437,13 +464,16 @@ def main():
     # Create shelter
     shelter = Shelter("Happy Paws Rescue")
 
-    demonstrate_functionality(shelter)
+    # demonstrate_functionality(shelter)
 
     # Add 10 generated animals to shelter
     for _ in range(10):
        shelter.add_animal(shelter.generate_random_animal())
 
     shelter.display_all()
+    shelter.save_to_file()
+
+
     
     
 
