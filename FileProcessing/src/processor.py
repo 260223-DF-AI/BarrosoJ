@@ -21,11 +21,11 @@ def process_sales_file(input_path: str, output_dir: str):
     transformed_records: list[dict] = calculate_totals(valid_records)
     aggregates: list = [aggregate_by_store(transformed_records), aggregate_by_product(transformed_records)]
 
-    write_summary_report(output_dir, transformed_records, error_list, aggregates)
+    write_summary_report("report.txt", transformed_records, error_list, aggregates)
     write_clean_csv("clean-sales.csv", transformed_records)
     write_error_log("errors.txt", error_list)
 
 if __name__ == "__main__":
     # Process from command line
     
-    process_sales_file("../sample-sales.csv", "./")
+    process_sales_file("sample_sales.csv", "./src")

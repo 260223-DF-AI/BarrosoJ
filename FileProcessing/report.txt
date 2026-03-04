@@ -1,0 +1,17 @@
+Time: 03/03, 21:19:19
+Total processed: 7
+Valid records: 3
+Errors: 4
+	Line 4: Date must be in YYYY-MM-DD format.
+	Line 5: quantity must be a positive number.
+	Line 6: Missing value for store_id field.
+	Line 7: Unable to convert quantity to int.
+
+Sales by store:
+	-STORE001: $659.78
+	-STORE002: $249.95000000000002
+
+Top 5 products:
+	1. Widget A: 22 units
+	2. Gadget B: 5 units
+

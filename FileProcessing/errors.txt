@@ -1,0 +1,4 @@
+Line 4: Date must be in YYYY-MM-DD format.
+Line 5: quantity must be a positive number.
+Line 6: Missing value for store_id field.
+Line 7: Unable to convert quantity to int.

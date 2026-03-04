@@ -39,7 +39,7 @@ def read_csv_file(filepath: str) -> list[dict]:
                 records.append(parse_line(line))
 
     except UnicodeDecodeError as e:
-        print(f"Error using Unicode encoding to read file.")
+        # print(f"Error using Unicode encoding to read file.")
 
         # attempt to read file with latin-1 encoding instead
         with open(filepath, "r", encoding="latin-1") as f:
@@ -50,13 +50,10 @@ def read_csv_file(filepath: str) -> list[dict]:
                 records.append(parse_line(line))
 
     except FileNotFoundError as e:
-        print(f"Couldn't find file.\n{e}")
+        # print(f"Couldn't find file.\n{e}")
         raise FileProcessingError()
 
 
     return records
     
 
-
-if __name__ == "__main__":
-    print(read_csv_file("sample_sales.csv"))

@@ -20,33 +20,34 @@ def validate_sales_record(record: dict, line_number: int) -> dict:
 
         # handle lack of value
         if not value:
-            raise MissingFieldError(f"Missing value for {field} field.")
+            raise MissingFieldError(f"Line {line_number}: Missing value for {field} field.")
         
         # validate quantity field
         if field == "quantity":
-            if value < 0:
-                raise InvalidDataError(f"{field} must be a positive number.")
             try:
                 validated_quantity: int = int(value)
+
+                if validated_quantity < 0:
+                    raise InvalidDataError(f"Line {line_number}: {field} must be a positive number.")
             
-            except TypeError as e:
-                print(f"{field} must be a number.\n{e}")
-                raise InvalidDataError(f"Unable to convert {field} to int.")
+            except ValueError as e:
+                # print(f"{field} must be a number.\n{e}")
+                raise InvalidDataError(f"Line {line_number}: Unable to convert {field} to int.")
             
             # use converted value in validated record 
             validated_record[field] = validated_quantity
 
         # validate price field
         elif field == "price":
-            if value < 0:
-                raise InvalidDataError(f"{field} must be a positive number.")
-            
             try:
                 validated_price: float = float(value)
+
+                if validated_price < 0:
+                    raise InvalidDataError(f"Line {line_number}: {field} must be a positive number.")
             
             except TypeError as e:
-                print(f"{field} must be a number.\n{e}")
-                raise InvalidDataError(f"Unable to convert {field} to float.")
+                # print(f"{field} must be a number.\n{e}")
+                raise InvalidDataError(f"Line {line_number}: Unable to convert {field} to float.")
             
             # use converted value in validated record 
             validated_record[field] = validated_price
@@ -61,15 +62,15 @@ def validate_sales_record(record: dict, line_number: int) -> dict:
 
                     # if make sure year, month, day have 4, 2 and 2 numbers respectively
                     if list(map(len, split_date)) != [4, 2, 2]:
-                        raise InvalidDataError(f"Date ({value}) must be in YYYY-MM-DD format.")
+                        raise InvalidDataError(f"Line {line_number}: Date ({value}) must be in YYYY-MM-DD format.")
                 
                 # if year, month or day isn't represented by numbers it's invalid formatting
                 else:
-                    raise InvalidDataError("Date must be in YYYY-MM-DD format.")
+                    raise InvalidDataError(f"Line {line_number}: Date must be in YYYY-MM-DD format.")
             
             # if there isn't a year, month and day field separated by hyphens it's invalid formatting
             else:  
-                raise InvalidDataError("Date must be in YYYY-MM-DD format.")
+                raise InvalidDataError(f"Line {line_number}: Date must be in YYYY-MM-DD format.")
         
             # no formatting issues, add record as is
             validated_record[field] = value
@@ -92,7 +93,7 @@ def validate_all_records(records):
     error_list: list[str] = []
     for i, record in enumerate(records):
         try:
-            validated_record: dict = validate_sales_record(record, i)
+            validated_record: dict = validate_sales_record(record, i+2) # i + 2 to account for 0 indexing & csv headers row
             valid_records.append(validated_record)
         
         except InvalidDataError as e:
