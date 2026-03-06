@@ -52,12 +52,12 @@ def clean_data(df: pd.DataFrame) -> pd.DataFrame:
     - Add calculated columns: 'total_amount' = quantity * unit_price
     """
 
-    df.drop_duplicates()
+    df = df.drop_duplicates()
     # drop missing values
-    df.dropna()
+    df = df.dropna()
 
     # strip whitespace & lowercase string columns
-    df.apply(lambda x: x.str.lower().strip() if x.dtype == object else x)
+    df = df.apply(lambda x: x.str.lower().strip() if x.dtype == object else x)
 
     # make new column of value quantity*unit_price
     df['total_amount'] = df.apply(lambda row: row.quantity * row.unit_price, axis=1)
@@ -165,7 +165,9 @@ def daily_sales_trend(df: pd.DataFrame):
     Returns: DataFrame with columns [date, total_sales, order_count]
     """
 
-    new_df = df.groupby('order_date').agg(total_sales=('total_amount', 'sum'), order_count=('quantity', 'sum')).reset_index()    
+    # new_df = df.groupby('order_date').agg(total_sales=('total_amount', 'sum'), order_count=('quantity', 'sum')).reset_index()    
+    new_df = df.groupby(['order_date', 'is_weekend']).agg(total_sales=('total_amount', 'sum'), order_count=('quantity', 'sum')).reset_index()    
+    
     return new_df
 
 def customer_analysis(df: pd.DataFrame) -> pd.DataFrame:
@@ -226,7 +228,7 @@ def create_regional_pie_chart(region_data: pd.DataFrame, output_path: str):
     plt.axis('equal')
     plt.savefig(output_path)
 
-def create_sales_trend_line(daily_data, output_path):
+def create_sales_trend_line(daily_data: pd.DataFrame, output_path: str):
     """
     Create a line chart showing daily sales trend.
     - Include moving average (7-day)
@@ -234,9 +236,20 @@ def create_sales_trend_line(daily_data, output_path):
     - Add proper axis labels and title
     - Save to output_path
     """
-    pass
+    
+    plt.figure(figsize=(12, 6))
+    plt.plot(daily_data['order_date'], daily_data['total_sales'], label='Daily Sales', color='blue')
+    daily_data['7_day_avg'] = daily_data['total_sales'].rolling(window=7).mean()
+    plt.plot(daily_data['order_date'], daily_data['7_day_avg'], label='7-Day Moving Average', color='orange')
+    plt.scatter(daily_data[daily_data['is_weekend']]['order_date'], daily_data[daily_data['is_weekend']]['total_sales'], color='red', label='Weekends')
+    plt.xlabel('Date')
+    plt.ylabel('Total Sales')
+    plt.title('Daily Sales Trend')
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig(output_path)
 
-def create_dashboard(df, output_dir):
+def create_dashboard(df: pd.DataFrame, output_dir: str):
     """
     Create a multi-panel dashboard with 4 subplots:
     1. Sales by category (bar)
@@ -246,7 +259,46 @@ def create_dashboard(df, output_dir):
     
     Save as a single figure.
     """
-    pass
+    
+    plt.figure(figsize=(20, 15))
+
+    # Sales by category
+    plt.subplot(2, 2, 1)
+    category_data = sales_by_category(df)
+    plt.barh(category_data.index, category_data['total_sales'], color='skyblue')
+    plt.xlabel('Total Sales')
+    plt.ylabel('Category')
+    plt.title('Sales by Category')
+
+    # Sales by region
+    plt.subplot(2, 2, 2)
+    region_data = sales_by_region(df)
+    plt.pie(region_data['total_sales'], labels=region_data['region'], autopct='%1.1f%%', startangle=90)
+    plt.title('Sales Distribution by Region')
+    plt.axis('equal')
+
+    # Daily trend
+    plt.subplot(2, 2, 3)
+    daily_data = daily_sales_trend(df)
+    plt.plot(daily_data['order_date'], daily_data['total_sales'], label='Daily Sales', color='blue')
+    daily_data['7_day_avg'] = daily_data['total_sales'].rolling(window=7).mean()
+    plt.plot(daily_data['order_date'], daily_data['7_day_avg'], label='7-Day Moving Average', color='orange')
+    plt.scatter(daily_data[daily_data['is_weekend']]['order_date'], daily_data[daily_data['is_weekend']]['total_sales'], color='red', label='Weekends')
+    plt.xlabel('Date')
+    plt.ylabel('Total Sales')
+    plt.title('Daily Sales Trend')
+    plt.legend()
+
+    # Top 10 products
+    plt.subplot(2, 2, 4)
+    top_products_data = top_products(df)
+    plt.barh(top_products_data['product_name'], top_products_data['total_sales'], color='lightgreen')
+    plt.xlabel('Total Sales')
+    plt.ylabel('Product Name')
+    plt.title('Top 10 Products by Sales')
+
+    plt.tight_layout()
+    plt.savefig(output_dir)
 
 
 
@@ -254,15 +306,17 @@ if __name__ == "__main__":
     df: pd.DataFrame = load_data("DataAnalysis/orders.csv")
     clean_df: pd.DataFrame = clean_data(df)
     clean_df: pd.DataFrame = add_time_features(clean_df)
-    # explore_data(clean_df)
-    # print(clean_df)
-    # add_time_features(clean_df).to_csv("clean_orders.csv")
+
     cat_sales: pd.DataFrame = sales_by_category(clean_df)
     by_region: pd.DataFrame = sales_by_region(clean_df)
-    # print(by_region)
-    top_products: pd.DataFrame = top_products(clean_df)
-    # print(top_products)
-    daily_sales_trend = daily_sales_trend(clean_df)
-    weekend_vs_weekday = weekend_vs_weekday(clean_df)
+    top_product: pd.DataFrame = top_products(clean_df)
+    daily_sales = daily_sales_trend(clean_df)
+    weekend_v_weekday = weekend_vs_weekday(clean_df)
     cust_analysis = customer_analysis(clean_df)
-    print(cust_analysis)
+    # print(cust_analysis)
+
+
+    create_category_bar_chart(cat_sales, "DataAnalysis/outputs/category_sales.png")
+    create_regional_pie_chart(by_region, "DataAnalysis/outputs/region_sales.png")
+    create_sales_trend_line(daily_sales, "DataAnalysis/outputs/sales_trend.png")
+    create_dashboard(clean_df, "DataAnalysis/outputs/dashboard.png")
