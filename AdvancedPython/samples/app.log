@@ -1,0 +1,12 @@
+2024-01-15 10:00:00 INFO Application started
+2024-01-15 10:00:01 INFO Loading configuration
+2024-01-15 10:00:02 WARNING Config key 'timeout' not found, using default
+2024-01-15 10:00:05 INFO Processing batch 1
+2024-01-15 10:00:06 ERROR Database connection failed: timeout
+2024-01-15 10:00:07 INFO Retrying connection
+2024-01-15 10:00:08 ERROR Database connection failed: refused
+2024-01-15 10:00:10 INFO Connection established
+2024-01-15 10:00:15 INFO Processing batch 2
+2024-01-15 10:00:20 WARNING Slow query detected: 5.2s
+2024-01-15 10:00:25 INFO Processing complete
+2024-01-15 10:00:26 INFO Application shutdown
