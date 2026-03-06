@@ -1,3 +1,7 @@
+import logging
+
+logging.basicConfig(level=logging.INFO)
+
 def read_lines(filepath, encoding='utf-8'):
     """
     Yield lines from a file one at a time.
@@ -9,7 +13,16 @@ def read_lines(filepath, encoding='utf-8'):
         for line in read_lines('large_file.txt'):
             process(line)
     """
-    pass
+    try:
+        with open(filepath, "r", encoding=encoding) as f:
+            for line in f:
+                # skip empty lines
+                if not line:
+                    continue
+                line = line.strip().
+                yield line
+    except UnicodeEncodeError as e:
+        
 
 def batch(iterable, size):
     """

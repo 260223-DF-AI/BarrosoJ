@@ -111,23 +111,24 @@ def cache(max_size=128):
         func.cache_clear = lambda : cache.clear()
         @wraps(func)
         def wrapper(*args, **kwargs):
-            if (args, kwargs) in cache:
+            cache_key = (args, tuple(sorted(kwargs.items())))
+            if cache_key in cache:
                 cache_info["hits"] += 1
                 # put back into dict so that it is most recent in ordering
-                cached_val = cache.pop((args, kwargs))
-                cache[(args, kwargs)] = cached_val
-                return cache[(args, kwargs)]
+                cached_val = cache.pop(cache_key)
+                cache[cache_key] = cached_val
+                return cache[cache_key]
             # func call not already cached, call it
             else:
                 cache_info["misses"] += 1
                 result = func(*args, **kwargs)
                 if len(cache) != max_size:
-                    cache[(args, kwargs)] = result
+                    cache[cache_key] = result
                 else:
                     val_to_delete = next(iter(cache)) # find least recent entry to remove
                     del cache[val_to_delete]
-                    cache[(args, kwargs)] = result
-            cache[(args, kwargs)] = result
+                    cache[cache_key] = result
+            cache[cache_key] = result
             return result
         
         return wrapper
