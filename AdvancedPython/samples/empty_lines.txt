@@ -1,0 +1,7 @@
+this is 
+
+a file
+
+with
+
+three internal empty lines

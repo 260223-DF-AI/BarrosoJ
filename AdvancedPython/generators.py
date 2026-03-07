@@ -17,9 +17,9 @@ def read_lines(filepath, encoding='utf-8'):
         with open(filepath, "r", encoding=encoding) as f:
             for line in f:
                 # skip empty lines
-                if not line:
-                    continue
                 line = line.strip()
+                if line == "":
+                    continue
                 yield line
     except UnicodeEncodeError as e:
         logging.error(f"Error encoding line in {filepath}: {e}")

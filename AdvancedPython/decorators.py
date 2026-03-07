@@ -1,4 +1,5 @@
 from functools import wraps
+from typing import Callable
 import time
 import logging
 
@@ -67,7 +68,7 @@ def retry(max_attempts=3, delay=1, exceptions=(Exception,)):
             pass
     """
     
-    def decorator(func: function):
+    def decorator(func: Callable):
         @wraps(func)
         def wrapper(*args, **kwargs):
             for i in range(max_attempts):
