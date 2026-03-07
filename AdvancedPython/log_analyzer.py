@@ -13,7 +13,14 @@ def analyze_logs(log_path):
     Uses generators for memory-efficient processing.
     Uses decorators for timing and logging.
     """
-    pass
+    
+    info_errs, warning_errs, error_errs = count_by_level(log_path)
+    log_report: str = f"""Logging counts by level for {log_path}:
+INFO: {info_errs}, WARNING: {warning_errs}, ERROR: {error_errs}
+
+Top error messages: {get_error_summary(log_path, top_n=3)}"""
+
+    return log_report
 
 
 @cache(max_size=1000)
@@ -70,8 +77,6 @@ def get_error_summary(log_path, top_n=10):
     return [error_tuple[0] for error_tuple in top_errors]
     
 
-
-
 def process_logs_in_batches(log_path, batch_size=1000):
     """
     Process logs in batches for database insertion.
@@ -88,4 +93,5 @@ if __name__ == "__main__":
     # for line in read_lines("samples/app.log"):
     #     print(parse_log_line(line))
 
-    print(get_error_summary("samples/app.log"))
+    # print(get_error_summary("samples/app.log"))
+    analyze_logs("samples/app.log")
