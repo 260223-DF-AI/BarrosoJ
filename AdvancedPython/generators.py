@@ -19,10 +19,11 @@ def read_lines(filepath, encoding='utf-8'):
                 # skip empty lines
                 if not line:
                     continue
-                line = line.strip().
+                line = line.strip()
                 yield line
     except UnicodeEncodeError as e:
-        
+        logging.error(f"Error encoding line in {filepath}: {e}")
+        return
 
 def batch(iterable, size):
     """
@@ -32,7 +33,12 @@ def batch(iterable, size):
         list(batch([1,2,3,4,5,6,7], 3))
         # [[1,2,3], [4,5,6], [7]]
     """
-    pass
+    
+    for i in range(0, len(iterable), size):
+        if i + size > len(iterable):
+            yield iterable[i:]
+        else:
+            yield iterable[i:i + size]
 
 def filter_by(iterable, predicate):
     """
@@ -42,14 +48,18 @@ def filter_by(iterable, predicate):
         evens = filter_by(range(10), lambda x: x % 2 == 0)
         list(evens)  # [0, 2, 4, 6, 8]
     """
-    pass
+    for item in iterable:
+        if predicate(item):
+            yield item
 
 
-def filter_errors(log_lines):
+def filter_errors(log_lines: list[str]):
     """
     Yield only lines containing 'ERROR'.
     """
-    pass
+    for line in log_lines:
+        if 'ERROR' in line:
+            yield line
 
 
 def filter_by_field(records, field, value):
@@ -59,5 +69,7 @@ def filter_by_field(records, field, value):
     Usage:
         active_users = filter_by_field(users, 'status', 'active')
     """
-    pass
+    for record in records:
+        if record[field] == value:
+            yield record
 

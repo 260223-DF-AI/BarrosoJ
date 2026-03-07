@@ -13,7 +13,15 @@ def create_pipeline(*stages):
         for result in pipeline('input.json'):
             save(result)
     """
-    pass
+    
+    def pipeline(input_data):
+        data = input_data
+        for stage in stages:
+            data = stage(data)
+        return data
+
+    return pipeline
+
 
 
 # Example pipeline stages:
