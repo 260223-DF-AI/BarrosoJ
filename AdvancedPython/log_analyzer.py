@@ -16,9 +16,20 @@ def analyze_logs(log_path):
     
     info_errs, warning_errs, error_errs = count_by_level(log_path)
     log_report: str = f"""Logging counts by level for {log_path}:
-INFO: {info_errs}, WARNING: {warning_errs}, ERROR: {error_errs}
+INFO: {info_errs}
+WARNING: {warning_errs}
+ERROR: {error_errs}\n
 
-Top error messages: {get_error_summary(log_path, top_n=3)}"""
+Top Error Messages:"""
+    
+    
+    for i, error_msg in enumerate(get_error_summary(log_path, top_n=3), 1):
+        log_report += f"{i}. {error_msg}"
+
+    # unable to add cache stastics since they are attached to cached function attributes
+    # and i am not calling a function here that has is cached
+
+
 
     return log_report
 
