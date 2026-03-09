@@ -31,3 +31,21 @@ Publishers -> Books
 - A book must have one publisher
 - No junction table required
 
+### Three create table statements
+CREATE TABLE authors (
+    id SERIAL PRIMARY KEY,
+    name varchar(50),
+    bio varchar(500)
+);
+
+CREATE TABLE publishers (
+    id SERIAL PRIMARY KEY,
+    pub_name varchar(100),
+    contact_info varchar(100)
+);
+
+CREATE TABLE orders (
+    id SERIAL PRIMARY KEY,
+    cust_id REFERENCES customers(id),
+    status varchar(50)
+);
