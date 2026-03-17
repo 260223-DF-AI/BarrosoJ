@@ -1,3 +1,4 @@
+-- Active: 1773160131354@@127.0.0.1@5432@chinook_pg
 -- Parking Lot*******
 -- *                *
 -- *                *
@@ -137,10 +138,36 @@ GROUP BY e.employee_id
 LIMIT 1;
 
 -- How many customers are assigned to each sales agent?
-
+SELECT COUNT(support_rep_id) AS num_customers
+FROM customer
+GROUP BY support_rep_id
+ORDER BY num_customers DESC;
 
 -- Which track was purchased the most in 2010?
+SELECT track.name, SUM(invoice_line.quantity) AS total_sold
+    FROM track
+    JOIN invoice_line on track.track_id = invoice_line.track_id
+    JOIN invoice ON invoice.invoice_id = invoice_line.invoice_id
+    WHERE EXTRACT(YEAR FROM invoice.invoice_date) = 2010
+    GROUP BY track.name
+    ORDER BY SUM(invoice_line.quantity) DESC, track.name ASC
+    LIMIT 1;
 
+
+SELECT COUNT(track_id) as total, il.track_id 
+    FROM invoice_line il 
+        JOIN invoice inv
+    ON il.invoice_id = inv.invoice_id
+    WHERE EXTRACT(YEAR FROM inv.invoice_date) = 2010
+    GROUP BY il.track_id
+
+SELECT * FROM invoice_line
+WHERE quantity > 1;
+
+SELECT track_id, COUNT(track_id) AS total
+FROM invoice_line
+GROUP BY track_id
+ORDER BY total DESC; 
 
 -- Show the top three best selling artists.
 
@@ -183,11 +210,20 @@ LIMIT 1;
 
 
 -- 4. boss employee (the one who reports to nobody)
-
+SELECT 'Boss ' || first_name || ' ' || last_name big_boss_name
+FROM employee
+WHERE reports_to IS NULL;
 
 -- 5. how many audio tracks were bought by German customers, and what was
 --    the total price paid for them?
+SELECT COUNT(*)
+FROM customer
 
+SELECT tr.id
+FROM track tr
+JOIN media_type mt
+ON tr.media_type_id = mt.media_type_id
+WHERE mt.name LIKE '%audio';
 
 -- 6. list the names and countries of the customers supported by an employee
 --    who was hired younger than 35.
