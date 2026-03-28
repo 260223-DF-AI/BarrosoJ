@@ -1,0 +1,51 @@
+order_id,customer_name,email,order_date,amount,status
+1000,,user0@example.com,2026-03-21,146.81,completed
+1001,,user1@example.com,2026-03-07,386.13,pending
+1002,,user2@example.com,2026-03-10,418.84,completed
+1010,Customer 3,user3@example.com,2026-03-25,200.65,cancelled
+1011,Customer 4,user4@example.com,2026-03-13,131.08,completed
+1005,Customer 5,user5@example.com,2026-03-06,-50.0,pending
+1006,Customer 6,user6@example.com,2026-03-06,-125.5,pending
+1007,Customer 7,bad_email_format.com,2026-03-27,385.88,completed
+1008,Customer 8,user8@example.com,2027-03-28,324.65,cancelled
+1009,Customer 9,user9@example.com,2026-02-26,106.51,unknown_status
+1010,Customer 10,user10@example.com,2026-03-24,356.88,cancelled
+1011,Customer 11,user11@example.com,2026-03-11,326.4,completed
+1012,Customer 12,user12@example.com,2026-03-20,114.78,cancelled
+1013,Customer 13,user13@example.com,2026-03-09,300.37,cancelled
+1014,Customer 14,user14@example.com,2026-02-28,420.87,cancelled
+1015,Customer 15,user15@example.com,2026-03-26,259.39,completed
+1016,Customer 16,user16@example.com,2026-03-25,20.61,cancelled
+1017,Customer 17,user17@example.com,2026-03-16,153.48,pending
+1018,Customer 18,user18@example.com,2026-03-10,417.4,cancelled
+1019,Customer 19,user19@example.com,2026-03-24,109.83,completed
+1020,Customer 20,user20@example.com,2026-03-19,173.29,completed
+1021,Customer 21,user21@example.com,2026-02-28,220.66,cancelled
+1022,Customer 22,user22@example.com,2026-03-24,405.22,cancelled
+1023,Customer 23,user23@example.com,2026-03-25,452.39,pending
+1024,Customer 24,user24@example.com,2026-03-08,205.11,cancelled
+1025,Customer 25,user25@example.com,2026-03-27,433.18,pending
+1026,Customer 26,user26@example.com,2026-03-14,38.66,completed
+1027,Customer 27,user27@example.com,2026-03-16,406.26,pending
+1028,Customer 28,user28@example.com,2026-03-12,198.25,cancelled
+1029,Customer 29,user29@example.com,2026-03-18,345.17,completed
+1030,Customer 30,user30@example.com,2026-03-27,108.5,completed
+1031,Customer 31,user31@example.com,2026-02-26,153.62,pending
+1032,Customer 32,user32@example.com,2026-03-13,113.77,pending
+1033,Customer 33,user33@example.com,2026-03-16,292.88,pending
+1034,Customer 34,user34@example.com,2026-03-09,78.69,completed
+1035,Customer 35,user35@example.com,2026-03-14,44.89,completed
+1036,Customer 36,user36@example.com,2026-03-16,179.39,completed
+1037,Customer 37,user37@example.com,2026-03-10,193.09,pending
+1038,Customer 38,user38@example.com,2026-03-19,230.22,cancelled
+1039,Customer 39,user39@example.com,2026-03-09,438.5,pending
+1040,Customer 40,user40@example.com,2026-03-24,400.67,cancelled
+1041,Customer 41,user41@example.com,2026-03-04,209.06,cancelled
+1042,Customer 42,user42@example.com,2026-03-14,331.98,pending
+1043,Customer 43,user43@example.com,2026-03-23,491.84,completed
+1044,Customer 44,user44@example.com,2026-02-26,242.63,pending
+1045,Customer 45,user45@example.com,2026-03-12,453.25,completed
+1046,Customer 46,user46@example.com,2026-03-07,115.83,cancelled
+1047,Customer 47,user47@example.com,2026-03-17,121.3,completed
+1048,Customer 48,user48@example.com,2026-03-22,290.6,completed
+1049,Customer 49,user49@example.com,2026-03-04,44.42,completed
